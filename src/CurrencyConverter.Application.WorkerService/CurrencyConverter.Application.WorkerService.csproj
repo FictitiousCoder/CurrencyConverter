@@ -10,6 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\CurrencyConvert.Infrastructure\CurrencyConvert.Infrastructure.csproj" />
+    <ProjectReference Include="..\CurrencyConvert.Infrastructure\CurrencyConverter.Infrastructure.csproj" />
   </ItemGroup>
 </Project>
