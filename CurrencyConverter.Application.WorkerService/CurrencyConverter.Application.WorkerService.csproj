@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>dotnet-CurrencyConverter.Application.WorkerService-5C8D5C67-688D-4222-80DD-E7EB61272256</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.18" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\src\CurrencyConvert.Infrastructure\CurrencyConvert.Infrastructure.csproj" />
+  </ItemGroup>
+</Project>

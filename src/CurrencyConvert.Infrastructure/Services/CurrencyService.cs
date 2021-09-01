@@ -9,6 +9,7 @@ namespace CurrencyConvert.Infrastructure.Services
     public class CurrencyService : ICurrencyService
     {
         private const string FixerApiUrl = "http://data.fixer.io/api/";
+        private const string DefaultBaseCurrency = "EUR";
 
         private readonly HttpClient _httpClient;
 
@@ -27,7 +28,7 @@ namespace CurrencyConvert.Infrastructure.Services
             return currencyPair.BaseAmount * exchangeRate;
         }
 
-        private async Task<ExchangeRatesDto> GetExchangeRates(string baseCurrency, string[] ratesToGet = null, DateTime? ratesDate = null)
+        public async Task<ExchangeRatesDto> GetExchangeRates(string baseCurrency = DefaultBaseCurrency, string[] ratesToGet = null, DateTime? ratesDate = null)
         {
             var request = (ratesDate.HasValue ? ratesDate.Value.ToString("yyyy-MM-dd") : "latest") +
                           $"?base={baseCurrency}"
