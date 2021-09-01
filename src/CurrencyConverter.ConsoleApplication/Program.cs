@@ -64,6 +64,9 @@ namespace CurrencyConverter
                 var input = Console.ReadLine();
                 skipParse = string.IsNullOrWhiteSpace(input);
 
+                if (skipParse)
+                    continue;
+
                 if (!DateTime.TryParse(input, out var parsedDate))
                     Console.WriteLine("Unable to parse date. Please type the date in a recognized format");
                 else
