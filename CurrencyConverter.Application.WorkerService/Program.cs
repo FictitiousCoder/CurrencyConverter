@@ -26,6 +26,7 @@ namespace CurrencyConverter.Application.WorkerService
                     services.AddHostedService<StoreNewExchangeRatesHostedService>();
                     services.AddTransient<ICurrencyService, CurrencyService>();
                     services.AddTransient<FixerApiHandler>();
+                    services.AddTransient<ExchangeRateDbContext>();
                 });
     }
 }

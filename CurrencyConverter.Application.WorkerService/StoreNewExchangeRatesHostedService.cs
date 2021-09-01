@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using CurrencyConvert.Infrastructure.Models;
 using CurrencyConvert.Infrastructure.Services;
+using CurrencyConverter.Domain.Entities;
+using CurrencyConverter.Infrastructure.RelationalStorage;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -11,13 +14,15 @@ namespace CurrencyConverter.Application.WorkerService
     public class StoreNewExchangeRatesHostedService : IHostedService, IDisposable
     {
         private readonly ICurrencyService _currencyService;
+        private readonly ExchangeRateDbContext _exchangeRateDbContext;
         private readonly ILogger<StoreNewExchangeRatesHostedService> _logger;
         private Timer _timer;
 
         public StoreNewExchangeRatesHostedService(ICurrencyService currencyService,
-            ILogger<StoreNewExchangeRatesHostedService> logger)
+            ExchangeRateDbContext exchangeRateDbContext, ILogger<StoreNewExchangeRatesHostedService> logger)
         {
             _currencyService = currencyService;
+            _exchangeRateDbContext = exchangeRateDbContext;
             _logger = logger;
         }
 
@@ -59,7 +64,15 @@ namespace CurrencyConverter.Application.WorkerService
 
         private async Task SaveExchangeRatesToDatabase(ExchangeRatesDto exchangeRates)
         {
-            throw new NotImplementedException();
+            var rateEntities = exchangeRates.Rates.Select(r => new ExchangeRate
+            {
+                Currency = r.Key,
+                Rate = r.Value,
+                TimeStamp = exchangeRates.TimeStamp,
+            });
+
+            await _exchangeRateDbContext.AddRangeAsync(rateEntities);
+            await _exchangeRateDbContext.SaveChangesAsync();
         }
 
         public Task StopAsync(CancellationToken stoppingToken)

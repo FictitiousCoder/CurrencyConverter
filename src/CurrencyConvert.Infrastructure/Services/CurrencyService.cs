@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using CurrencyConvert.Infrastructure.Models;
+using CurrencyConvert.Infrastructure.Serialization;
 
 namespace CurrencyConvert.Infrastructure.Services
 {
@@ -58,6 +59,7 @@ namespace CurrencyConvert.Infrastructure.Services
             => new JsonSerializerOptions
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                Converters = { new DateTimeOffsetJsonConverter() }
             };
     }
 }

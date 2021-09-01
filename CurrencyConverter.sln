@@ -17,6 +17,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 - Application", "2 - Appl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CurrencyConverter.Application.WorkerService", "CurrencyConverter.Application.WorkerService\CurrencyConverter.Application.WorkerService.csproj", "{A8DB5955-B826-4B4D-B76F-81315DE68470}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 - Domain", "3 - Domain", "{F50D7201-D2F7-4CBF-9B6A-CC8F7FD2EBB9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CurrencyConverter.Domain", "CurrencyConverter.Domain\CurrencyConverter.Domain.csproj", "{7CEEF645-2C28-4889-94C6-0B10EAFFB5C9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,10 @@ Global
 		{A8DB5955-B826-4B4D-B76F-81315DE68470}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8DB5955-B826-4B4D-B76F-81315DE68470}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A8DB5955-B826-4B4D-B76F-81315DE68470}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CEEF645-2C28-4889-94C6-0B10EAFFB5C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CEEF645-2C28-4889-94C6-0B10EAFFB5C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CEEF645-2C28-4889-94C6-0B10EAFFB5C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CEEF645-2C28-4889-94C6-0B10EAFFB5C9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -47,6 +55,8 @@ Global
 		{F96CBC04-2856-4D9A-B2F0-430BC57CDAE9} = {93CA8076-0EF8-4632-972E-B97751C3BD71}
 		{0B00B61B-B6A5-4C2A-A6A5-07E1C87BE030} = {6219ABBB-CEB6-4CCE-A0DC-5B710EF9E853}
 		{07427142-CA6C-450E-9203-DD3F84CE2E98} = {93CA8076-0EF8-4632-972E-B97751C3BD71}
+		{A8DB5955-B826-4B4D-B76F-81315DE68470} = {0136312D-E853-401B-94BF-B2E8FD0EED9E}
+		{7CEEF645-2C28-4889-94C6-0B10EAFFB5C9} = {F50D7201-D2F7-4CBF-9B6A-CC8F7FD2EBB9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {16B71270-3C49-4018-823C-327875CAC51A}
