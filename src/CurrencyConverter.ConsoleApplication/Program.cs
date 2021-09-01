@@ -26,9 +26,17 @@ namespace CurrencyConverter
             Console.WriteLine($"{Environment.NewLine}Write the currency you want {baseCurrency} exchanged into.");
             var counterCurrency = Console.ReadLine();
 
+            Console.WriteLine(
+                $"{Environment.NewLine}If you want to use the exchange rates for a specific date, enter the desired date.{Environment.NewLine}" +
+                $"To use the latest rates, simply use an empty input and proceed.");
+            var exchangeRateDate = GetExchangeRateDateFromInput();
+
             Console.WriteLine($"{Environment.NewLine}Converting...{Environment.NewLine}");
-            var currencyPair = new CurrencyPair(amount, baseCurrency, counterCurrency);
+            var currencyPair = new CurrencyPair(amount, baseCurrency, counterCurrency, exchangeRateDate);
             var convertedAmount = await ConvertBaseCurrency(currencyService, currencyPair);
+
+            if (currencyPair.ExchangeRateDate.HasValue)
+                Console.WriteLine($"Using exchanges rates from {currencyPair.ExchangeRateDate.Value:dd.MM.yyyy}:");
 
             Console.WriteLine($"{currencyPair.BaseAmount} {currencyPair.BaseCurrency} = {convertedAmount} {currencyPair.CounterCurrency}");
 
@@ -44,6 +52,25 @@ namespace CurrencyConverter
                 Console.WriteLine("Invalid amount. Please type only numbers.");
 
             return parsedAmount;
+        }
+
+        private static DateTime? GetExchangeRateDateFromInput()
+        {
+            DateTime? result = null;
+            var skipParse = false;
+
+            while (!skipParse && !result.HasValue)
+            {
+                var input = Console.ReadLine();
+                skipParse = string.IsNullOrWhiteSpace(input);
+
+                if (!DateTime.TryParse(input, out var parsedDate))
+                    Console.WriteLine("Unable to parse date. Please type the date in a recognized format");
+                else
+                    result = parsedDate;
+            }
+
+            return result;
         }
 
         private static async Task<decimal> ConvertBaseCurrency(ICurrencyService currencyService, CurrencyPair currencyPair)

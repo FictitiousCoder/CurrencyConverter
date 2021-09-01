@@ -22,14 +22,15 @@ namespace CurrencyConvert.Infrastructure.Services
 
         public async Task<Decimal> Convert(CurrencyPair currencyPair)
         {
-            var exchangeRates = await GetExchangeRates(currencyPair.BaseCurrency, new []{ currencyPair.CounterCurrency });
+            var exchangeRates = await GetExchangeRates(currencyPair.BaseCurrency, new []{ currencyPair.CounterCurrency }, currencyPair.ExchangeRateDate);
             var exchangeRate = GetExchangeRateForCurrency(exchangeRates, currencyPair.CounterCurrency);
             return currencyPair.BaseAmount * exchangeRate;
         }
 
-        private async Task<ExchangeRatesDto> GetExchangeRates(string baseCurrency, string[] ratesToGet = null)
+        private async Task<ExchangeRatesDto> GetExchangeRates(string baseCurrency, string[] ratesToGet = null, DateTime? ratesDate = null)
         {
-            var request = $"latest?base={baseCurrency}"
+            var request = (ratesDate.HasValue ? ratesDate.Value.ToString("yyyy-MM-dd") : "latest") +
+                          $"?base={baseCurrency}"
                           + (ratesToGet != null && ratesToGet.Length > 0
                               ? "&rates=" + string.Join(',', ratesToGet)
                               : string.Empty);
