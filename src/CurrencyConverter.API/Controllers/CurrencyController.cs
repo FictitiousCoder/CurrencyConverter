@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using CurrencyConvert.Infrastructure.Models;
-using CurrencyConvert.Infrastructure.Services;
-using CurrencyConverter.Infrastructure.RelationalStorage;
+using CurrencyConverter.Application.Queries;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -12,14 +12,12 @@ namespace CurrencyConverter.API.Controllers
     [Route("[controller]")]
     public class CurrencyController : ControllerBase
     {
-        private readonly ICurrencyService _currencyService;
-        private readonly ExchangeRateDbContext _exchangeRateDbContext;
+        private readonly IMediator _mediator;
         private readonly ILogger<CurrencyController> _logger;
 
-        public CurrencyController(ICurrencyService currencyService, ExchangeRateDbContext exchangeRateDbContext, ILogger<CurrencyController> logger)
+        public CurrencyController(IMediator mediator, ILogger<CurrencyController> logger)
         {
-            _currencyService = currencyService;
-            _exchangeRateDbContext = exchangeRateDbContext;
+            _mediator = mediator;
             _logger = logger;
         }
 
@@ -39,7 +37,10 @@ namespace CurrencyConverter.API.Controllers
 
             try
             {
-                var result = await _currencyService.Convert(new CurrencyPair(baseAmount, baseCurrency, counterCurrency, date));
+                var result = await _mediator.Send(new GetCurrencyConversionQuery
+                {
+                    CurrencyPair = new CurrencyPair(baseAmount, baseCurrency, counterCurrency, date)
+                });
                 return Ok(result);
             }
             catch (Exception exception)

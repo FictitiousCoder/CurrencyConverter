@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CurrencyConvert.Infrastructure\CurrencyConverter.Infrastructure.csproj" />
+    <ProjectReference Include="..\CurrencyConverter.Application\CurrencyConverter.Application.csproj" />
   </ItemGroup>
 
 

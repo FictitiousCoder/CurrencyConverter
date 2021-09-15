@@ -8,6 +8,7 @@ namespace CurrencyConvert.Infrastructure.Services
 {
     public class FixerApiHandler : DelegatingHandler
     {
+        //TODO: move this to config
         private const string FixerApiAccessKey = "12d2780b96e50aa322259e903b6cbd82";
 
         public FixerApiHandler()

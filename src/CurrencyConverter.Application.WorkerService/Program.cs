@@ -13,7 +13,6 @@ namespace CurrencyConverter.Application.WorkerService
             var host = CreateHostBuilder(args).Build();
 
             using var context = host.Services.GetService<ExchangeRateDbContext>();
-            context.Database.EnsureCreated();
             context.Database.Migrate();
 
             host.Run();

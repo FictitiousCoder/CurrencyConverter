@@ -3,9 +3,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using CurrencyConvert.Infrastructure.Models;
-using CurrencyConvert.Infrastructure.Services;
-using CurrencyConverter.Domain.Entities;
-using CurrencyConverter.Infrastructure.RelationalStorage;
+using CurrencyConverter.Application.Commands;
+using CurrencyConverter.Application.Queries;
+using MediatR;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -13,16 +13,13 @@ namespace CurrencyConverter.Application.WorkerService
 {
     public class StoreNewExchangeRatesHostedService : IHostedService, IDisposable
     {
-        private readonly ICurrencyService _currencyService;
-        private readonly ExchangeRateDbContext _exchangeRateDbContext;
+        private readonly IMediator _mediator;
         private readonly ILogger<StoreNewExchangeRatesHostedService> _logger;
         private Timer _timer;
 
-        public StoreNewExchangeRatesHostedService(ICurrencyService currencyService,
-            ExchangeRateDbContext exchangeRateDbContext, ILogger<StoreNewExchangeRatesHostedService> logger)
+        public StoreNewExchangeRatesHostedService(IMediator mediator, ILogger<StoreNewExchangeRatesHostedService> logger)
         {
-            _currencyService = currencyService;
-            _exchangeRateDbContext = exchangeRateDbContext;
+            _mediator = mediator;
             _logger = logger;
         }
 
@@ -52,7 +49,7 @@ namespace CurrencyConverter.Application.WorkerService
         {
             try
             {
-                return await _currencyService.GetExchangeRates();
+                return await _mediator.Send(new GetExchangeRatesQuery());
             }
             catch (Exception e)
             {
@@ -64,15 +61,18 @@ namespace CurrencyConverter.Application.WorkerService
 
         private async Task SaveExchangeRatesToDatabase(ExchangeRatesDto exchangeRates)
         {
-            var rateEntities = exchangeRates.Rates.Select(r => new ExchangeRate
-            {
-                Currency = r.Key,
-                Rate = r.Value,
-                TimeStamp = exchangeRates.TimeStamp,
-            });
+            var commands = exchangeRates.Rates.Select(rate =>
+                new CreateExchangeRateCommand
+                {
+                    Currency = rate.Key,
+                    Rate = rate.Value,
+                    TimeStamp = exchangeRates.TimeStamp,
+                });
 
-            await _exchangeRateDbContext.AddRangeAsync(rateEntities);
-            await _exchangeRateDbContext.SaveChangesAsync();
+            await _mediator.Send(new CreateExchangeRatesCommand
+            {
+                ExchangeRates = commands,
+            });
         }
 
         public Task StopAsync(CancellationToken stoppingToken)
